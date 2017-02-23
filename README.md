@@ -13,14 +13,14 @@ AjaxAuth it's a simple package that provides a fully configurable authorization/
 1) In order to install AjaxAuth, just add the following to your composer.json. Then run `composer update`:
 
 ```json
-"duro85/ajaxauth": "1.*"
+"Duro85/AjaxAuth": "1.*"
 ```
 
 2) Open your `config/app.php` and add the following to the `providers` array:
 
 ```php
-duro85\ajaxauth\AjaxAuthServiceProvider::class,
-duro85\ajaxauth\AjaxAuthRouteServiceProvider::class,
+Duro85\AjaxAuth\AjaxAuthServiceProvider::class,
+Duro85\AjaxAuth\AjaxAuthRouteServiceProvider::class,
 ```
 
 ## License

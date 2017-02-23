@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "duro85\\ajaxauth\\": "src/"
+            "Duro85\\AjaxAuth\\": "src/"
         }
     }
 }
