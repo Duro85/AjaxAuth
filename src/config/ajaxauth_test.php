@@ -1,7 +1,5 @@
 <?php
-
 return [
-
     /*
       |--------------------------------------------------------------------------
       | AjaxAuth, Validators
@@ -11,9 +9,8 @@ return [
       | custom configuration/validation rules to register, login and renew the 
       | user password for each guard.
       | 
-      | New files will be named like : ajaxauth_{guard}.php
+      | New files will be named like : ajaxauth_{guard}.php 
      */
-
     'validators' => [
         'register' => [
             'firstname' => 'required|max:255',
