@@ -23,6 +23,13 @@ Duro85\AjaxAuth\AjaxAuthServiceProvider::class,
 Duro85\AjaxAuth\AjaxAuthRouteServiceProvider::class,
 ```
 
+3) execute command : 
+```
+php artisan vendor:publish
+```
+this will publish routes, configurations and language files.
+
+
 ## License
 
 AjaxAuth is free software distributed under the terms of the BSD-3-Clause license. Please refer to [license](LICENSE). 
