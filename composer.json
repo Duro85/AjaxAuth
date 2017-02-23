@@ -1,6 +1,9 @@
 {
     "name": "duro85/ajaxauth",
     "description": "a package to allow full ajax authentication for Laravel 5.3",
+    "keywords": ["laravel","auth","ajax"],
+    "homepage": "https://github.com/duro85/ajaxauth",
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "AjaxAuth",
