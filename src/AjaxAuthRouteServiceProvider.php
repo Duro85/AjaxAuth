@@ -7,19 +7,13 @@ use Illuminate\Routing\Router;
 
 class AjaxAuthRouteServiceProvider extends ServiceProvider
 {
-
     protected $namespace = '';
 
     public function boot()
     {
         parent::boot();
         if (!$this->app->routesAreCached()) {
-            @include base_path('routes/ajaxauth.php');
+            include base_path('routes/ajaxauth.php');
         }
     }
-
-    public function map(Router $router)
-    {        
-    }
-
 }

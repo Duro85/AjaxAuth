@@ -12,7 +12,6 @@ use Validator;
 
 class AjaxAuthController extends BaseController
 {
-
     private $register_default = [
         'firstname' => 'required|max:255',
         'email'     => 'required|email|max:255|unique:users',
@@ -30,7 +29,6 @@ class AjaxAuthController extends BaseController
 
     public function login(Request $request, $guard)
     {
-
         $config = Config::get('ajaxauth_' . $guard . '.validators.login', $this->login_default);
         $input = $request->only(array_keys($config));
 
@@ -63,7 +61,6 @@ class AjaxAuthController extends BaseController
 
     public function logout(Request $request, $guard)
     {
-
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
@@ -122,7 +119,6 @@ class AjaxAuthController extends BaseController
 
     public function passwordSendResetEmail(Request $request, $guard)
     {
-
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
@@ -150,7 +146,6 @@ class AjaxAuthController extends BaseController
 
     public function passwordNew(Request $request, $guard)
     {
-
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
