@@ -8,6 +8,5 @@ return [
     "registration_succeded"    => "The new user has been succefully registered.",
     "reset_password_subject"   => "Reset Email Link",
     "password_reset_link_sent" => "Reset link sent by email (remember to check into the spam folder).",
-    "password_changed"         => "The new password has been succefully registered."
+    "password_changed"         => "The new password has been succefully registered.",
 ];
-

@@ -18,16 +18,16 @@ return [
             'email'       => 'required|email|max:255|unique:users',
             'password'    => 'required|min:6',
             'type_name'   => 'required',
-            'status_name' => 'required'
+            'status_name' => 'required',
         ],
         'login'       => [
             'firstname' => 'required|min:3',
-            'password'  => 'required|min:6|confirmed'
+            'password'  => 'required|min:6|confirmed',
         ],
         'passwordnew' => [
             'token'    => 'required',
             'email'    => 'required|email',
-            'password' => 'required|confirmed|min:6'
+            'password' => 'required|confirmed|min:6',
         ]
     ],
 ];

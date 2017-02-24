@@ -12,6 +12,7 @@ use Validator;
 
 class AjaxAuthController extends BaseController
 {
+
     private $register_default = [
         'firstname' => 'required|max:255',
         'email'     => 'required|email|max:255|unique:users',
@@ -29,7 +30,7 @@ class AjaxAuthController extends BaseController
 
     public function login(Request $request, $guard)
     {
-        $config = Config::get('ajaxauth_' . $guard . '.validators.login', $this->login_default);
+        $config = Config::get('ajaxauth_'.$guard.'.validators.login', $this->login_default);
         $input = $request->only(array_keys($config));
 
         if (!$this->guardValidator($guard)) {
@@ -41,7 +42,7 @@ class AjaxAuthController extends BaseController
         if (Validator::make($input, $config)->fails()) {
             return [
                 'code'   => 400,
-                'result' => Validator::make($input, $config)->messages()
+                'result' => Validator::make($input, $config)->messages(),
             ];
         }
         Auth::guard($guard);
@@ -76,30 +77,30 @@ class AjaxAuthController extends BaseController
 
     public function register(Request $request, $guard)
     {
-        $config = Config::get('ajaxauth_' . $guard . '.validators.register', $this->register_default);
+        $config = Config::get('ajaxauth_'.$guard.'.validators.register', $this->register_default);
         $input = $request->only(array_keys($config));
 
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
+                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard]),
             ];
         }
         if (Validator::make($input, $config)->fails()) {
             return [
                 'code'   => 400,
-                'result' => Validator::make($input, $config)->messages()
+                'result' => Validator::make($input, $config)->messages(),
             ];
         }
 
         Auth::guard($guard);
 
         try {
-            $model = Config::get('auth.providers.' . Config::get('auth.guards.' . $guard)['provider'])['model'];
+            $model = Config::get('auth.providers.'.Config::get('auth.guards.'.$guard)['provider'])['model'];
         } catch (Exception $ex) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.bad_configuration')
+                'result' => trans('ajaxauth.bad_configuration'),
             ];
         }
 
@@ -108,12 +109,12 @@ class AjaxAuthController extends BaseController
         } catch (Exception $ex) {
             return [
                 'code'   => 400,
-                'result' => $ex->getMessage()
+                'result' => $ex->getMessage(),
             ];
         }
         return [
             'code'   => 200,
-            'result' => trans('ajaxauth.registration_succeded')
+            'result' => trans('ajaxauth.registration_succeded'),
         ];
     }
 
@@ -122,14 +123,14 @@ class AjaxAuthController extends BaseController
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
+                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard]),
             ];
         }
 
         if (!$request->email) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.invalid_data')
+                'result' => trans('ajaxauth.invalid_data'),
             ];
         }
 
@@ -140,7 +141,7 @@ class AjaxAuthController extends BaseController
         return [
             'code'   => 200,
             'result' => trans('ajaxauth.password_reset_link_sent'),
-            'resp'   => $response
+            'resp'   => $response,
         ];
     }
 
@@ -149,17 +150,17 @@ class AjaxAuthController extends BaseController
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
+                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard]),
             ];
         }
 
-        $config = Config::get('ajaxauth_' . $guard . '.validators.passwordnew', $this->passwordnew_default);
+        $config = Config::get('ajaxauth_'.$guard.'.validators.passwordnew', $this->passwordnew_default);
         $input = $request->only(array_keys($config));
 
         if (Validator::make($input, $config)->fails()) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.invalid_data')
+                'result' => trans('ajaxauth.invalid_data'),
             ];
         }
 
@@ -170,7 +171,7 @@ class AjaxAuthController extends BaseController
 
         switch ($response) {
             case Password::PASSWORD_RESET:
-                return ['code' => 200, 'result' => trans('ajaxauth.password_changed'),];
+                return ['code' => 200, 'result' => trans('ajaxauth.password_changed')];
 
             default:
                 return ['code' => 400, 'result' => $response];
@@ -179,7 +180,7 @@ class AjaxAuthController extends BaseController
 
     protected function guardValidator($guard_name)
     {
-        return Config::has('auth.guards.' . $guard_name);
+        return Config::has('auth.guards.'.$guard_name);
     }
 
 }

@@ -7,6 +7,7 @@ use Illuminate\Routing\Router;
 
 class AjaxAuthRouteServiceProvider extends ServiceProvider
 {
+
     protected $namespace = '';
 
     public function boot()
@@ -16,4 +17,5 @@ class AjaxAuthRouteServiceProvider extends ServiceProvider
             include base_path('routes/ajaxauth.php');
         }
     }
+
 }
