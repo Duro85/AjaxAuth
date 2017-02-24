@@ -2,47 +2,47 @@
 
 namespace Duro85\AjaxAuth;
 
-use Illuminate\Routing\Controller as BaseController;
+use Config;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
-use Config;
+use Illuminate\Support\Facades\Password;
 use Validator;
-use App;
-use Mail;
 
-class AjaxAuthController extends BaseController {
+class AjaxAuthController extends BaseController
+{
 
     private $register_default = [
         'firstname' => 'required|max:255',
-        'email' => 'required|email|max:255|unique:users',
-        'password' => 'required|min:6|confirmed',
+        'email'     => 'required|email|max:255|unique:users',
+        'password'  => 'required|min:6|confirmed',
     ];
     private $login_default = [
-        'email' => 'required|email|max:255',
+        'email'    => 'required|email|max:255',
         'password' => 'required|min:6',
     ];
     private $passwordnew_default = [
-        'token' => 'required',
-        'email' => 'required|email',
+        'token'    => 'required',
+        'email'    => 'required|email',
         'password' => 'required|confirmed|min:6',
     ];
 
-    public function login(Request $request, $guard) {
+    public function login(Request $request, $guard)
+    {
 
         $config = Config::get('ajaxauth_' . $guard . '.validators.login', $this->login_default);
         $input = $request->only(array_keys($config));
 
         if (!$this->guardValidator($guard)) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
             ];
         }
         if (Validator::make($input, $config)->fails()) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => Validator::make($input, $config)->messages()
             ];
         }
@@ -50,45 +50,47 @@ class AjaxAuthController extends BaseController {
 
         if (!Auth::attempt($input)) {
             return [
-                'code' => 401,
+                'code'   => 400,
                 'result' => trans('ajaxauth.invalid_data')
             ];
         }
 
         return [
-            'code' => 200,
+            'code'   => 200,
             'result' => trans('ajaxauth.login_success')
         ];
     }
 
-    public function logout(Request $request, $guard) {
+    public function logout(Request $request, $guard)
+    {
 
         if (!$this->guardValidator($guard)) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
             ];
         }
 
         return [
-            'code' => 200,
+            'code'   => 200,
             'result' => Auth::guard($guard)->logout()
         ];
     }
 
-    public function register(Request $request, $guard) {
+    public function register(Request $request, $guard)
+    {
         $config = Config::get('ajaxauth_' . $guard . '.validators.register', $this->register_default);
         $input = $request->only(array_keys($config));
 
         if (!$this->guardValidator($guard)) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
             ];
         }
         if (Validator::make($input, $config)->fails()) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => Validator::make($input, $config)->messages()
             ];
         }
@@ -99,7 +101,7 @@ class AjaxAuthController extends BaseController {
             $model = Config::get('auth.providers.' . Config::get('auth.guards.' . $guard)['provider'])['model'];
         } catch (Exception $ex) {
             return [
-                'code' => 401,
+                'code'   => 400,
                 'result' => trans('ajaxauth.bad_configuration')
             ];
         }
@@ -108,28 +110,29 @@ class AjaxAuthController extends BaseController {
             $model::create($input);
         } catch (Exception $ex) {
             return [
-                'code' => 402,
+                'code'   => 400,
                 'result' => $ex->getMessage()
             ];
         }
         return [
-            'code' => 200,
+            'code'   => 200,
             'result' => trans('ajaxauth.registration_succeded')
         ];
     }
 
-    public function passwordSendResetEmail(Request $request, $guard) {
+    public function passwordSendResetEmail(Request $request, $guard)
+    {
 
         if (!$this->guardValidator($guard)) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
             ];
         }
 
         if (!$request->email) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => trans('ajaxauth.invalid_data')
             ];
         }
@@ -139,17 +142,18 @@ class AjaxAuthController extends BaseController {
         });
 
         return [
-            'code' => 200,
+            'code'   => 200,
             'result' => trans('ajaxauth.password_reset_link_sent'),
-            'resp' => $response
+            'resp'   => $response
         ];
     }
 
-    public function passwordNew(Request $request, $guard) {
+    public function passwordNew(Request $request, $guard)
+    {
 
         if (!$this->guardValidator($guard)) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
             ];
         }
@@ -159,7 +163,7 @@ class AjaxAuthController extends BaseController {
 
         if (Validator::make($input, $config)->fails()) {
             return [
-                'code' => 400,
+                'code'   => 400,
                 'result' => trans('ajaxauth.invalid_data')
             ];
         }
@@ -178,7 +182,8 @@ class AjaxAuthController extends BaseController {
         }
     }
 
-    protected function guardValidator($guard_name) {
+    protected function guardValidator($guard_name)
+    {
         return Config::has('auth.guards.' . $guard_name);
     }
 
