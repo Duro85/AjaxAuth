@@ -182,4 +182,5 @@ class AjaxAuthController extends BaseController
         return Config::has('auth.guards.'.$guard_name);
     }
 
+
 }

@@ -3,7 +3,6 @@
 namespace Duro85\AjaxAuth;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
 
 class AjaxAuthRouteServiceProvider extends ServiceProvider
 {
@@ -17,4 +16,5 @@ class AjaxAuthRouteServiceProvider extends ServiceProvider
         }
     }
 
+    
 }
