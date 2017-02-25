@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @link      https://github.com/duro85/ajaxauth
+ *
+ * @copyright 2017 Michelangelo Belfiore
+ */
 return [
     'invalid_guard'            => "Can't find the guard named :GUARD",
     'invalid_data'             => 'Please check the provided data, they ar invalid or incomplete.',

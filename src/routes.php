@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @link      https://github.com/duro85/ajaxauth
+ *
+ * @copyright 2017 Michelangelo Belfiore
+ */
 Route::group(['middleware' => 'web'], function () {
     // send email with reset link
     Route::any('/ajaxauth/password/sendresetemail/{guard}', 'Duro85\AjaxAuth\AjaxAuthController@passwordSendResetEmail')->where(['guard' => '[\w\-\d]+']);

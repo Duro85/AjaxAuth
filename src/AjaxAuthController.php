@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @link      https://github.com/duro85/ajaxauth
+ *
+ * @copyright 2017 Michelangelo Belfiore
+ */
 namespace Duro85\AjaxAuth;
 
 use Config;
@@ -31,7 +36,8 @@ class AjaxAuthController extends BaseController
     {
         $config = Config::get('ajaxauth_'.$guard.'.validators.login', $this->login_default);
         $input = $request->only(array_keys($config));
-
+        $remember = ($request->has('remember_me')) ? $request->input(['remember_me']) : 0;
+        
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
@@ -46,7 +52,7 @@ class AjaxAuthController extends BaseController
         }
         Auth::guard($guard);
 
-        if (!Auth::attempt($input)) {
+        if (!Auth::attempt($input, $remember)) {
             return [
                 'code'   => 400,
                 'result' => trans('ajaxauth.invalid_data'),

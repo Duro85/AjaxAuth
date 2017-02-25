@@ -7,7 +7,8 @@
     "authors": [
         {
             "name": "AjaxAuth",
-            "email": "michelangelo.belfiore@gmail.com"
+            "email": "michelangelo.belfiore@gmail.com",
+            "role": "Developer"
         }
     ],
     "minimum-stability": "dev",

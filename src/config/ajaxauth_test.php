@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @link      https://github.com/duro85/ajaxauth
+ *
+ * @copyright 2017 Michelangelo Belfiore
+ */
 return [
     /*
       |--------------------------------------------------------------------------
