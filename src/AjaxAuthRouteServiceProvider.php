@@ -7,7 +7,6 @@ use Illuminate\Routing\Router;
 
 class AjaxAuthRouteServiceProvider extends ServiceProvider
 {
-
     protected $namespace = '';
 
     public function boot()

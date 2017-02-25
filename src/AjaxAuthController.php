@@ -12,7 +12,6 @@ use Validator;
 
 class AjaxAuthController extends BaseController
 {
-
     private $register_default = [
         'firstname' => 'required|max:255',
         'email'     => 'required|email|max:255|unique:users',
@@ -36,7 +35,7 @@ class AjaxAuthController extends BaseController
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
+                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard]),
             ];
         }
         if (Validator::make($input, $config)->fails()) {
@@ -50,13 +49,13 @@ class AjaxAuthController extends BaseController
         if (!Auth::attempt($input)) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.invalid_data')
+                'result' => trans('ajaxauth.invalid_data'),
             ];
         }
 
         return [
             'code'   => 200,
-            'result' => trans('ajaxauth.login_success')
+            'result' => trans('ajaxauth.login_success'),
         ];
     }
 
@@ -65,13 +64,13 @@ class AjaxAuthController extends BaseController
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
-                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard])
+                'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard]),
             ];
         }
 
         return [
             'code'   => 200,
-            'result' => Auth::guard($guard)->logout()
+            'result' => Auth::guard($guard)->logout(),
         ];
     }
 
