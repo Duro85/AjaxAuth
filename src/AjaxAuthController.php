@@ -111,6 +111,7 @@ class AjaxAuthController extends BaseController
                 'result' => $ex->getMessage(),
             ];
         }
+
         return [
             'code'   => 200,
             'result' => trans('ajaxauth.registration_succeded'),
@@ -181,5 +182,4 @@ class AjaxAuthController extends BaseController
     {
         return Config::has('auth.guards.'.$guard_name);
     }
-
 }

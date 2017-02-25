@@ -15,5 +15,4 @@ class AjaxAuthRouteServiceProvider extends ServiceProvider
             include base_path('routes/ajaxauth.php');
         }
     }
-
 }
