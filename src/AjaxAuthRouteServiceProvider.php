@@ -16,5 +16,4 @@ class AjaxAuthRouteServiceProvider extends ServiceProvider
         }
     }
 
-    
 }
