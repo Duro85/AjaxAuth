@@ -1,4 +1,5 @@
 # AjaxAuth (Laravel >=5.3 Package)
+[![StyleCI](https://styleci.io/repos/73827252/shield?branch=master)](https://styleci.io/repos/73827252)
 
 AjaxAuth it's a simple package that provides a fully configurable authorization/registration flow via ajax. It provides its controllers and publishes its configuration and its routes, which can then be changed at will.
 
