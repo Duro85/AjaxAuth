@@ -14,6 +14,9 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Validator;
+use Illuminate\Auth\Passwords\DatabaseTokenRepository;
+use Mail;
+use Illuminate\Support\Str;
 
 class AjaxAuthController extends BaseController
 {
@@ -140,14 +143,26 @@ class AjaxAuthController extends BaseController
             ];
         }
 
-        $response = Password::broker($guard)->sendResetLink(['email' => $request->email], function (Message $message) {
-            $message->subject(trans('ajaxauth.reset_password_subject'));
-        });
+        $class = config('auth.providers.'.$guard.'.model');
+
+        if ($user = $class::where('email', $request->input('email'))->first()) {
+            $tokens = $this->createTokenRepository($guard);
+            $token = $tokens->create($user);
+
+            \DB::table(config('auth.passwords.'.$guard.'.table'))->insert([
+                'email' => $user->email,
+                'token' => $token,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
+            Mail::send(config('auth.passwords.'.$guard.'.email'), ['token' => $token, 'user' => $user, 'guard' => $guard], function ($message) use (&$user) {
+                $message->subject(trans('ajaxauth.reset_password_subject'));
+                $message->to($user->email);
+            });
+        }
 
         return [
             'code'   => 200,
             'result' => trans('ajaxauth.password_reset_link_sent'),
-            'resp'   => $response,
         ];
     }
 
@@ -187,5 +202,24 @@ class AjaxAuthController extends BaseController
     protected function guardValidator($guard_name)
     {
         return Config::has('auth.guards.'.$guard_name);
+    }
+    
+    protected function createTokenRepository($guard)
+    {
+        $config = config("auth.passwords.{$guard}");
+        $key = config('app.key');
+
+        if (Str::startsWith($key, 'base64:')) {
+            $key = base64_decode(substr($key, 7));
+        }
+        $connection = isset($config['connection']) ? $config['connection'] : null;
+
+        return new DatabaseTokenRepository(
+            \DB::connection($connection),
+            app('hash'),
+            $config['table'],
+            $key,
+            $config['expire']
+        );
     }
 }
