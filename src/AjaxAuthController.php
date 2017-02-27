@@ -37,7 +37,7 @@ class AjaxAuthController extends BaseController
 
     public function login(Request $request, $guard)
     {
-        $config = Config::get('ajaxauth_'.$guard.'.validators.login', $this->login_default);
+        $config = Config::get('ajaxauth.validators.'.$guard.'.login', $this->login_default);
         $input = $request->only(array_keys($config));
         $remember = ($request->has('remember_me')) ? $request->input(['remember_me']) : 0;
 
@@ -85,7 +85,7 @@ class AjaxAuthController extends BaseController
 
     public function register(Request $request, $guard)
     {
-        $config = Config::get('ajaxauth_'.$guard.'.validators.register', $this->register_default);
+        $config = Config::get('ajaxauth.validators.'.$guard.'.register', $this->register_default);
         $input = $request->only(array_keys($config));
 
         if (!$this->guardValidator($guard)) {
@@ -163,7 +163,7 @@ class AjaxAuthController extends BaseController
             ];
         }
 
-        $config = Config::get('ajaxauth_'.$guard.'.validators.passwordnew', $this->passwordnew_default);
+        $config = Config::get('ajaxauth.validators.'.$guard.'.passwordnew', $this->passwordnew_default);
         $input = $request->only(array_keys($config));
 
         if (Validator::make($input, $config)->fails()) {
