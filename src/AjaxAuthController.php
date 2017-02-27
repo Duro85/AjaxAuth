@@ -1,10 +1,10 @@
 <?php
-
 /**
  * @link      https://github.com/duro85/ajaxauth
  *
  * @copyright 2017 Michelangelo Belfiore
  */
+
 namespace Duro85\AjaxAuth;
 
 use Config;
@@ -40,7 +40,7 @@ class AjaxAuthController extends BaseController
         $config = Config::get('ajaxauth_'.$guard.'.validators.login', $this->login_default);
         $input = $request->only(array_keys($config));
         $remember = ($request->has('remember_me')) ? $request->input(['remember_me']) : 0;
-        
+
         if (!$this->guardValidator($guard)) {
             return [
                 'code'   => 400,
@@ -49,15 +49,15 @@ class AjaxAuthController extends BaseController
         }
         if (Validator::make($input, $config)->fails()) {
             return [
-                'code'   => 400,
+                'code'   => 401,
                 'result' => Validator::make($input, $config)->messages(),
             ];
         }
         Auth::guard($guard);
 
-        if (!Auth::attempt($input, $remember)) {
+        if (!Auth::guard($guard)->attempt($input, $remember)) {
             return [
-                'code'   => 400,
+                'code'   => 402,
                 'result' => trans('ajaxauth.invalid_data'),
             ];
         }
@@ -138,31 +138,19 @@ class AjaxAuthController extends BaseController
 
         if (!$request->email) {
             return [
-                'code'   => 400,
+                'code'   => 405,
                 'result' => trans('ajaxauth.invalid_data'),
             ];
         }
+        $response = Password::broker($guard)->sendResetLink(['email' => $request->email], function (Message $message) {
+            $message->subject(trans('ajaxauth.reset_password_subject'));
+        });
 
-        $class = config('auth.providers.'.$guard.'.model');
-
-        if ($user = $class::where('email', $request->input('email'))->first()) {
-            $tokens = $this->createTokenRepository($guard);
-            $token = $tokens->create($user);
-
-            \DB::table(config('auth.passwords.'.$guard.'.table'))->insert([
-                'email' => $user->email,
-                'token' => $token,
-                'created_at' => date('Y-m-d H:i:s')
-            ]);
-            Mail::send(config('auth.passwords.'.$guard.'.email'), ['token' => $token, 'user' => $user, 'guard' => $guard], function ($message) use (&$user) {
-                $message->subject(trans('ajaxauth.reset_password_subject'));
-                $message->to($user->email);
-            });
-        }
 
         return [
             'code'   => 200,
             'result' => trans('ajaxauth.password_reset_link_sent'),
+            'resp'   => $response,
         ];
     }
 
@@ -170,7 +158,7 @@ class AjaxAuthController extends BaseController
     {
         if (!$this->guardValidator($guard)) {
             return [
-                'code'   => 400,
+                'code'   => 401,
                 'result' => trans('ajaxauth.invalid_guard', ['guard' => $guard]),
             ];
         }
@@ -180,7 +168,7 @@ class AjaxAuthController extends BaseController
 
         if (Validator::make($input, $config)->fails()) {
             return [
-                'code'   => 400,
+                'code'   => 402,
                 'result' => trans('ajaxauth.invalid_data'),
             ];
         }
@@ -195,7 +183,7 @@ class AjaxAuthController extends BaseController
                 return ['code' => 200, 'result' => trans('ajaxauth.password_changed')];
 
             default:
-                return ['code' => 400, 'result' => $response];
+                return ['code' => 403, 'result' => $response];
         }
     }
 
@@ -203,23 +191,5 @@ class AjaxAuthController extends BaseController
     {
         return Config::has('auth.guards.'.$guard_name);
     }
-    
-    protected function createTokenRepository($guard)
-    {
-        $config = config("auth.passwords.{$guard}");
-        $key = config('app.key');
 
-        if (Str::startsWith($key, 'base64:')) {
-            $key = base64_decode(substr($key, 7));
-        }
-        $connection = isset($config['connection']) ? $config['connection'] : null;
-
-        return new DatabaseTokenRepository(
-            \DB::connection($connection),
-            app('hash'),
-            $config['table'],
-            $key,
-            $config['expire']
-        );
-    }
 }
