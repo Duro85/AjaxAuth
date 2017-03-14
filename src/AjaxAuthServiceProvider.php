@@ -15,6 +15,6 @@ class AjaxAuthServiceProvider extends ServiceProvider
     {
         $this->publishes([__DIR__.'/resources/lang/' => resource_path('lang/')], 'lang');
         $this->publishes([__DIR__.'/config/ajaxauth.php' => config_path('/ajaxauth.php')], 'ajaxauth');
-        $this->publishes([__DIR__.'/routes.php' => base_path('/routes/ajaxauth.php')], 'routes');
+        $this->publishes([__DIR__.'/routes/ajaxauth.php' => base_path('/routes/ajaxauth.php')], 'routes');
     }
 }
