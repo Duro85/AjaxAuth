@@ -10,7 +10,7 @@ return [
       | AjaxAuth, Validators
       |--------------------------------------------------------------------------
       |
-      | Config file  custom configuration/validation rules to register, login 
+      | Config file  custom configuration/validation rules to register, login
       | and renew the user password for each guard.
       |
      */
@@ -18,12 +18,12 @@ return [
         'foo' => [
             'register'    => [
                 'firstname'   => 'required|max:255',
-                'lastname'   => 'required|max:255',
+                'lastname'    => 'required|max:255',
                 'email'       => 'required|email|max:255|unique:foo_table',
                 'password'    => 'required|min:6',
             ],
             'login'       => [
-                'email' => 'required|email|max:255',
+                'email'     => 'required|email|max:255',
                 'password'  => 'required|min:6|confirmed',
             ],
             'passwordnew' => [
@@ -34,12 +34,12 @@ return [
         ],
         'bar' => [
             'register'    => [
-                'tax_code'   => 'required|max:255',
+                'tax_code'    => 'required|max:255',
                 'email'       => 'required|email|max:255|unique:bar_table',
                 'password'    => 'required|min:6',
             ],
             'login'       => [
-                'tax_code' => 'required|min:255',
+                'tax_code'  => 'required|min:255',
                 'password'  => 'required|min:6|confirmed',
             ],
             'passwordnew' => [

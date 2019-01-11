@@ -17,9 +17,9 @@ class AjaxAuthRouteServiceProvider extends ServiceProvider
     {
         parent::boot();
         if (!$this->app->routesAreCached()) {
-            if (file_exists(base_path('routes/ajaxauth.php')))
+            if (file_exists(base_path('routes/ajaxauth.php'))) {
                 include base_path('routes/ajaxauth.php');
+            }
         }
     }
-
 }

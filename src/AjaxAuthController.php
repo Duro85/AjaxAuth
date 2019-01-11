@@ -14,9 +14,6 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Validator;
-use Illuminate\Auth\Passwords\DatabaseTokenRepository;
-use Mail;
-use Illuminate\Support\Str;
 
 class AjaxAuthController extends BaseController
 {
@@ -146,7 +143,6 @@ class AjaxAuthController extends BaseController
             $message->subject(trans('ajaxauth.reset_password_subject'));
         });
 
-
         return [
             'code'   => 200,
             'result' => trans('ajaxauth.password_reset_link_sent'),
@@ -191,5 +187,4 @@ class AjaxAuthController extends BaseController
     {
         return Config::has('auth.guards.'.$guard_name);
     }
-
 }
