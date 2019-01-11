@@ -2,8 +2,8 @@
 
 namespace Duro85\AjaxAuth;
 
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AjaxAuthNotification extends Notification
 {
@@ -19,12 +19,13 @@ class AjaxAuthNotification extends Notification
     /**
      * Create a notification instance.
      *
-     * @param  string  $token
-     * @param  string  $guard
-     * @param  array  $mail_params
+     * @param string $token
+     * @param string $guard
+     * @param array  $mail_params
+     *
      * @return void
      */
-    public function __construct($token, $guard, Array $mail_params = [])
+    public function __construct($token, $guard, array $mail_params = [])
     {
         $this->token = $token;
         $this->guard = $guard;
@@ -35,7 +36,8 @@ class AjaxAuthNotification extends Notification
     /**
      * Get the notification's channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return array|string
      */
     public function via($notifiable)
@@ -46,29 +48,30 @@ class AjaxAuthNotification extends Notification
     /**
      * Build the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
-        // get password config 
+        // get password config
         $config = config("auth.passwords.{$this->guard}");
         if (isset($config['view'])) {
             /*
              * custom view message
              */
-            return (new MailMessage)->view($config['view'], $this->mail_params);
+            return (new MailMessage())->view($config['view'], $this->mail_params);
         } else {
             /**
-             * standard laravel notification email with localizable test            
+             * standard laravel notification email with localizable test.
              */
             //you can specify a different route for each guard
-            $link = isset($config['route']) ? route($config['route'], $this->token) : route('password.reset', $this->token);            
-            return (new MailMessage)
+            $link = isset($config['route']) ? route($config['route'], $this->token) : route('password.reset', $this->token);
+
+            return (new MailMessage())
                             ->line('You are receiving this email because we received a password reset request for your account.')
                             ->action('Reset Password', $link)
                             ->line('If you did not request a password reset, no further action is required.');
         }
     }
-
 }

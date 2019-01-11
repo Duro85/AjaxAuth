@@ -5,6 +5,7 @@
  *
  * @copyright 2017 Michelangelo Belfiore
  */
+
 namespace Duro85\AjaxAuth;
 
 use Illuminate\Support\ServiceProvider;
